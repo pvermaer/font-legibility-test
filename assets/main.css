@@ -1,0 +1,73 @@
+* {
+    box-sizing: border-box; 
+}
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.4rem;
+    font-family:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+aside {
+    display: flex;
+    align-items: flex-end;
+    align-content: space-between;
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 10rem;
+    padding: 1rem;
+    background-color: #e9f1f6;
+}
+.themeDark {
+    background-color: #04111b;
+    color: #fff;
+}
+.themeDark aside {
+    color: #eeeeee;
+    background-color: #021739;
+}
+.themeDark a {
+    color: #eeeeee;
+}
+.themeBright {
+    background-color: #fff;
+    color: #101010;
+}
+main {
+    flex: 6;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+input,
+optgroup,
+select,
+textarea {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+}
+h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+.loading {
+    font-size: 1.5rem;
+    text-align: center;
+    color:#aaaaaa;
+}
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    margin-right: 0.5rem;
+}
+.flight {
+    position: absolute;
+    font-feature-settings: 'zero' 1;
+    line-height: 100%;
+}
