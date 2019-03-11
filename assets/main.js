@@ -34,7 +34,7 @@ $(document).ready(function() {
     $.ajax({
         url: 'https://developer.fraport.de/api/flights/1.0/flight/FRA/arrival',
         beforeSend: function(xhr) {
-            xhr.setRequestHeader("Authorization", "Bearer f9e7153e-edec-345d-9135-cfa263450b5f")
+            xhr.setRequestHeader("Authorization", "Bearer 84edc390-47e6-3f78-9c70-52145e61289f")
         },
         success: function(data){
             $('.loading').hide();
