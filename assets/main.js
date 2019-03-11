@@ -129,7 +129,6 @@ function positionFlights() {
             offsetY = $('aside').height();
         } else {
             offsetX = $('aside').width();
-            console.log("X:" + offsetX + " Y:" + offsetY);
         }
         $(this).css({
             'left': getRandomInt(offsetX, $(document).width())+'px',
