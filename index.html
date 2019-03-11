@@ -10,7 +10,8 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono|Fira+Mono|Fira+Sans|Exo|Ubuntu|Ubuntu+Mono|Source+Code+Pro" rel="stylesheet">
     <link href="https://rsms.me/inter/inter.css" rel="stylesheet">
     <link href="assets/main.css" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="assets/main.js"></script>
 
 </head>
@@ -18,24 +19,28 @@
 <aside>
     <form>
         <div class="form-group">
-        <label for="input-size">Font size:</label>
-        <input id="input-size" type="number" min="1" max="36" value="12">
+        <label for="inputSize">Font size:</label>
+        <input id="inputSize" type="number" min="1" max="36" value="12">
         </div>
         <div class="form-group">
-            <label for="input-blur">Blur:</label>
-            <input id="input-blur" type="number" min="0" max="12" value="0" step="0.001">
+            <label for="inputBlur">Blur:</label>
+            <input id="inputBlur" type="number" min="0" max="12" value="0" step="0.01">
         </div>
         <div class="form-group">
-                <label for="input-theme">Theme:</label>
-                <select id="input-theme">
+                <label for="inputTheme">Theme:</label>
+                <select id="inputTheme">
                     <option value="themeBright" selected>Bright</option>
                     <option value="themeDark">Dark</option>
                 </select>
         </div>
         <div class="form-group">
-                <label for="input-font">Font:</label>
-                <select id="input-font">
+                <label for="inputFont">Font:</label>
+                <select id="inputFont">
                 </select>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="inputMovement" checked>
+            <label for="inputMovement">Random movement</label>
         </div>
     </form>
     <footer>

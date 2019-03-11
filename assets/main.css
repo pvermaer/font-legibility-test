@@ -4,6 +4,7 @@
 body {
     display: flex;
     min-height: 100vh;
+    overflow: hidden;
     flex-direction: row;
     margin: 0;
     font-size: 16px;
@@ -20,36 +21,20 @@ aside {
     padding: 1rem;
     background-color: #e9f1f6;
 }
-.themeDark {
-    background-color: #04111b;
-    color: #fff;
-}
-.themeDark aside {
-    color: #eeeeee;
-    background-color: #021739;
-}
-.themeDark a {
-    color: #eeeeee;
-}
-.themeBright {
-    background-color: #fff;
-    color: #101010;
-}
 main {
     flex: 6;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 input,
-optgroup,
-select,
-textarea {
+select {
+    padding: .375rem .75rem;
     font-family: inherit;
     font-size: 100%;
     line-height: 1.15;
     margin: 0;
+    border: 1px solid #ced4da;
 }
 h1 {
     font-size: 1.5rem;
@@ -70,4 +55,32 @@ h1 {
     position: absolute;
     font-feature-settings: 'zero' 1;
     line-height: 100%;
+    z-index: -1;
+}
+
+/* Bright theme */
+.themeBright {
+    background-color: #fff;
+    color: #101010;
+}
+
+/* Dark theme */
+
+.themeDark {
+    background-color: #04111b;
+    color: #fff;
+}
+.themeDark aside {
+    color: #eeeeee;
+    background-color: #021739;
+}
+.themeDark a {
+    color: #eeeeee;
+}
+
+.themeDark input,
+.themeDark select {
+    background-color: #122f6a;
+    color: #fff;
+    border: 1px solid #04111b;
 }
