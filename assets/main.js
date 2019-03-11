@@ -2,8 +2,8 @@
 var variation = 8;
 // Interval speed in milliseconds. 1 second is typical for a radar.
 var speed = 1000;
-// How many planes to show?
-var maxPlanes = 40;
+// The display density of planes on a given surface.
+var density = 50000;
 // Which fonts to select?
 var fonts = [
 'Roboto',
@@ -17,34 +17,32 @@ var fonts = [
 'Exo'
 ];
 
-// Get the flights data, in this case arrivals
-$.ajax({
-    url: 'https://developer.fraport.de/api/flights/1.0/flight/FRA/arrival',
-    beforeSend: function(xhr) {
-        xhr.setRequestHeader("Authorization", "Bearer f9e7153e-edec-345d-9135-cfa263450b5f")
-    },
-    success: function(data){
-        $('.loading').hide();
-        $.each(data, function(index, item) {
-            $('main').append($('<div>', {
-                html: item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber + "<br>" + item.flight.aircraftType.icaoCode,
-                class: "flight",
-                css: {
-                    'left': getRandomInt($('aside').width(), $(document).width())+'px',
-                    'top': getRandomInt(0, $(document).height())+'px'
-                }
-            }));
-            return index < maxPlanes;
-        });
-    },
-    error: function(jqXHR, textStatus, errorThrown)   {
-        console.log(textStatus);
-        // Alternatively use a local file
-        $.getJSON('flights.json', { get_param: 'value' }, function(data) {
+$(document).ready(function() {
+    var inputFont = $("#inputFont");
+    var inputSize = $("#inputSize");
+    var inputBlur = $("#inputBlur");
+    var inputTheme = $("#inputTheme");
+    var inputMovement = $("#inputMovement");
+    var interval = false;
+    // How many planes to show? Results in 20 - 50 planes on a typical display
+    var maxPlanes = (document.body.clientWidth * document.body.clientHeight / density).toFixed();
+    
+    console.log(maxPlanes);
+
+    // Get the flights data, in this case arrivals
+    $.ajax({
+        url: 'https://developer.fraport.de/api/flights/1.0/flight/FRA/arrival',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer f9e7153e-edec-345d-9135-cfa263450b5f")
+        },
+        success: function(data){
             $('.loading').hide();
             $.each(data, function(index, item) {
+                flightNumber = item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber;
+                aircraftType = item.flight.aircraftType.icaoCode == "undefined" ? '' : item.flight.aircraftType.icaoCode;
+
                 $('main').append($('<div>', {
-                    html: item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber + "<br>" + item.flight.aircraftType.icaoCode,
+                    html: flightNumber + "<br>" + aircraftType,
                     class: "flight",
                     css: {
                         'left': getRandomInt($('aside').width(), $(document).width())+'px',
@@ -52,19 +50,27 @@ $.ajax({
                     }
                 }));
                 return index < maxPlanes;
-                });
-        });
-    }
-
-});
-
-$( document ).ready(function() {
-    var inputFont = $("#inputFont");
-    var inputSize = $("#inputSize");
-    var inputBlur = $("#inputBlur");
-    var inputTheme = $("#inputTheme");
-    var inputMovement = $("#inputMovement");
-    var interval = false;
+            });
+        },
+        error: function(jqXHR, textStatus, errorThrown)   {
+            console.log(textStatus);
+            // Alternatively use a local file
+            $.getJSON('flights.json', { get_param: 'value' }, function(data) {
+                $('.loading').hide();
+                $.each(data, function(index, item) {
+                    $('main').append($('<div>', {
+                        html: item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber + "<br>" + item.flight.aircraftType.icaoCode,
+                        class: "flight",
+                        css: {
+                            'left': getRandomInt($('aside').width(), $(document).width())+'px',
+                            'top': getRandomInt(0, $(document).height())+'px'
+                        }
+                    }));
+                    return index < maxPlanes;
+                    });
+            });
+        }
+    });
 
     $.each(fonts, function(i, val) {
         inputFont.append($("<option />").val(val).text(val));
@@ -90,7 +96,7 @@ $( document ).ready(function() {
     });
 
     inputMovement.change(function() {
-        if(inputMovement.attr("checked")) {
+        if(inputMovement.prop("checked")) {
             interval = setInterval(moveFlights, speed);
         } else {
             clearInterval(interval);
