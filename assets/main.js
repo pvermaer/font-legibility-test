@@ -34,7 +34,7 @@ $(document).ready(function() {
     $.ajax({
         url: 'https://developer.fraport.de/api/flights/1.0/flight/FRA/arrival',
         beforeSend: function(xhr) {
-            xhr.setRequestHeader("Authorization", "Bearer 84edc390-47e6-3f78-9c70-52145e61289f")
+            xhr.setRequestHeader("Authorization", "Bearer a01c8b71-9627-3f15-a86e-fde8aaec7bbc")
         },
         success: function(data){
             $('.loading').hide();
@@ -91,7 +91,11 @@ $(document).ready(function() {
     });
 
     inputTheme.change(function() {
-        $('body').removeClass().addClass(inputTheme.val());
+        document.documentElement.classList.add('color-theme-in-transition')
+        document.documentElement.setAttribute('data-theme', inputTheme.val());
+        window.setTimeout(function() {
+            document.documentElement.classList.remove('color-theme-in-transition')
+        }, 1000);
     });
 
     inputMovement.change(function() {
@@ -126,9 +130,9 @@ function positionFlights() {
 
         // if we have the header on top
         if ( $('aside').width() == document.body.clientWidth ) {
-            offsetY = $('aside').height();
+            offsetY = $('aside').outerHeight();
         } else {
-            offsetX = $('aside').width();
+            offsetX = $('aside').outerWidth();
         }
         $(this).css({
             'left': getRandomInt(offsetX, $(document).width())+'px',
@@ -140,9 +144,20 @@ function positionFlights() {
 function moveFlights() {
     $('.flight').each(function( index ) {
         var position = $(this).position();
+        posX = getRandomInt(position.left - variation, position.left + variation);
+        posY = getRandomInt(position.top - variation, position.top + variation);
+        
+        while(posX < ($('aside').outerWidth() + 8)) {
+            posX++;
+        }
+        
+        while(posY > ($('main').height() - $('.flight').height())) {
+            posY--;
+        }
+        
         $(this).css({
-            'left': getRandomInt(position.left - variation, position.left + variation)+'px',
-            'top': getRandomInt(position.top - variation, position.top + variation)+'px'
+            "left": Math.abs(posX) + "px",
+            "top": Math.abs(posY) + "px"
         })
     });
 }
