@@ -56,7 +56,7 @@ aside {
     flex-wrap: wrap;
     flex: 1;
     min-width: 10rem;
-    padding: 2rem;
+    padding: 1.5rem;
     color: var(--textAlt-color);
     background-color: var(--secondary-background);
 }
