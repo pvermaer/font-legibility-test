@@ -24,6 +24,7 @@ $(document).ready(function() {
     var inputTheme = $("#inputTheme");
     var inputMovement = $("#inputMovement");
     var interval = false;
+ 
     // How many planes to show? Results in 20 - 50 planes on a typical display
     var maxPlanes = (document.body.clientWidth * document.body.clientHeight / density).toFixed();
     
@@ -43,14 +44,12 @@ $(document).ready(function() {
 
                 $('main').append($('<div>', {
                     html: flightNumber + "<br>" + aircraftType,
-                    class: "flight",
-                    css: {
-                        'left': getRandomInt($('aside').width(), $(document).width())+'px',
-                        'top': getRandomInt(0, $(document).height())+'px'
-                    }
+                    class: "flight"
                 }));
                 return index < maxPlanes;
             });
+            // Position flights randomly on the page
+            positionFlights();
         },
         error: function(jqXHR, textStatus, errorThrown)   {
             console.log(textStatus);
@@ -114,6 +113,29 @@ function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
+}
+
+$( window ).resize(function() {
+
+});
+
+function positionFlights() {
+    $('.flight').each(function( index ) {
+        var offsetX = 0;
+        var offsetY = 0;
+
+        // if we have the header on top
+        if ( $('aside').width() == document.body.clientWidth ) {
+            offsetY = $('aside').height();
+        } else {
+            offsetX = $('aside').width();
+            console.log("X:" + offsetX + " Y:" + offsetY);
+        }
+        $(this).css({
+            'left': getRandomInt(offsetX, $(document).width())+'px',
+            'top': getRandomInt(offsetY, $(document).height())+'px'
+        })
+    });
 }
 
 function moveFlights() {
