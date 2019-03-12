@@ -4,14 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Font Legbility Test</title>
+    <meta name="author" content="Peter Vermaercke">
+    <meta name="description" content="A tool to test the legibility of different fonts for typical aviation data like flight numbers, aircraft types and gate numbers">
+    <title>Font Legbility Tester</title>
+
+    <meta property="og:url" content="http://vrmrck.be/projects/legibility/" />
+    <meta property="og:title" content="Font Legibility Tester" />
+    <meta property="og:description" content="A tool to test the legibility of different fonts for typical aviation data like flight numbers, aircraft types and gate numbers" />
+    <meta property="og:image" content="http://vrmrck.be/projects/legibility/assets/fontLegibilityTester.png" />
 
     <!-- Load all the fonts! -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono|Fira+Mono|Fira+Sans|Exo|Ubuntu|Ubuntu+Mono|Source+Code+Pro" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono|Fira+Mono|Fira+Sans|Exo|Ubuntu|Ubuntu+Mono|Source+Code+Pro|Open+Sans" rel="stylesheet">
     <link href="https://rsms.me/inter/inter.css" rel="stylesheet">
     <link href="assets/main.css" rel="stylesheet">
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="assets/jquery.min.js"></script>
     <script src="assets/main.js"></script>
 
 </head>
@@ -37,6 +44,7 @@
         <div class="form-group">
                 <label for="inputFont">Font:</label>
                 <select id="inputFont">
+                    <option disabled>Loading fonts&hellip;</option>
                 </select>
         </div>
         <div class="form-group">
@@ -45,7 +53,7 @@
         </div>
     </form>
     <footer>
-        <h1>Font legibility tester</h1>
+        <h1>Font Legibility Tester</h1>
         <p>This is a little tool created by <a href="http://vrmrck.be">Peter Vermaercke</a> to test the legibility of different fonts for typical aviation data like flight numbers, aircraft types and gate numbers. It uses the <a href="https://developer.fraport.de">Fraport API</a> to use actual flight data. The random movement mimics the behavior of radar pulses.</p>
     </footer>
 </aside>

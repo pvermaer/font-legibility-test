@@ -7,7 +7,6 @@ html[data-theme='light'] {
     --textAlt-color: #04111b;
     --link-color: #293895;
     --input-background: white;
-    --input-border: #ced4da;
     --secondary-background: hsl(232,57%,95%);
     --background: white;
   }
@@ -17,7 +16,6 @@ html[data-theme='dark'] {
     --textAlt-color: #eeeeee;
     --link-color: white;
     --input-background: #122f6a;
-    --input-border: #0f568b;
     --secondary-background: #021739;
     --background: #04111b;
   }
@@ -27,7 +25,6 @@ html[data-theme='high-contrast'] {
     --textAlt-color: #eeeeee;
     --link-color: white;
     --input-background: black;
-    --input-border: #505050;
     --secondary-background: #202020;
     --background: black;
 }
@@ -40,9 +37,10 @@ html.color-theme-in-transition * {
 
 body {
     display: flex;
-    min-height: 100vh;
+    flex-wrap: wrap;
+    align-content: flex-start;
     overflow: hidden;
-    flex-direction: row;
+    min-height: 100vh;
     margin: 0;
     font-size: 16px;
     line-height: 1.5rem;
@@ -51,23 +49,56 @@ body {
 
 aside {
     display: flex;
-    align-items: flex-end;
-    align-content: space-between;
     flex-wrap: wrap;
-    flex: 1;
-    min-width: 10rem;
+    flex-direction: column-reverse;
     padding: 1.5rem;
     color: var(--textAlt-color);
     background-color: var(--secondary-background);
 }
 
 main {
-    flex: 6;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-color);
     background-color: var(--background);
+}
+
+@media (min-width: 48rem) {
+    aside {
+        flex: nowrap;
+        justify-content: space-between;
+        flex-direction: row-reverse;
+    }
+
+    aside > * {
+        flex: 0 1 48%;
+    }
+}
+
+@media (min-width: 72rem) {
+    body {
+        align-content: stretch;
+        flex-wrap: nowrap;
+    }
+
+    aside {
+        min-width: 18rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-end;
+        align-content: space-between;
+        flex: 1;
+    }
+
+    aside > * {
+        flex: 0 1 auto;
+    }
+
+    main {
+        flex: 6;
+    }
 }
 
 input,
@@ -79,7 +110,7 @@ select {
     margin: 0;
     background-color: var(--input-background);
     color: var(--input-text);
-    border: 1px solid var(--input-border);
+    border: 0;
 }
 
 a {

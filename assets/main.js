@@ -14,7 +14,10 @@ var fonts = [
 'Ubuntu Mono',
 'Source Code Pro',
 'Inter',
-'Exo'
+'Open Sans',
+'Exo',
+'Lucida Grande',
+'Verdana'
 ];
 
 $(document).ready(function() {
@@ -23,16 +26,15 @@ $(document).ready(function() {
     var inputBlur = $("#inputBlur");
     var inputTheme = $("#inputTheme");
     var inputMovement = $("#inputMovement");
-    var interval = false;
+    var movementInterval = false;
+    var resizeInterval;
  
     // How many planes to show? Results in 20 - 50 planes on a typical display
     var maxPlanes = (document.body.clientWidth * document.body.clientHeight / density).toFixed();
-    
-    console.log(maxPlanes);
 
     // Get the flights data, in this case arrivals
     $.ajax({
-        url: 'https://developer.fraport.de/api/flights/1.0/flight/FRA/arrival/blabla',
+        url: 'https://developer.fraport.de/api/flights/1.0/flight/FRA/arrival',
         beforeSend: function(xhr) {
             xhr.setRequestHeader("Authorization", "Bearer a01c8b71-9627-3f15-a86e-fde8aaec7bbc")
         },
@@ -54,7 +56,7 @@ $(document).ready(function() {
         error: function(jqXHR, textStatus, errorThrown)   {
             console.log(textStatus);
             // Alternatively use a local file
-            $.getJSON('https://vrmrck.be/projects/legibility/assets/flights.json', function(data) {
+            $.getJSON('flights.json', function(data) {
                 $('.loading').hide();
                 $.each(data, function(index, item) {
                     flightNumber = item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber;
@@ -71,6 +73,8 @@ $(document).ready(function() {
         }
     });
 
+    // Remove loading fonts message
+    $('#inputFont option').remove();
     $.each(fonts, function(i, val) {
         inputFont.append($("<option />").val(val).text(val));
     });
@@ -100,9 +104,9 @@ $(document).ready(function() {
 
     inputMovement.change(function() {
         if(inputMovement.prop("checked")) {
-            interval = setInterval(moveFlights, speed);
+            movementInterval = setInterval(moveFlights, speed);
         } else {
-            clearInterval(interval);
+            clearInterval(movementInterval);
         }
     });
     
@@ -119,24 +123,28 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// Wait until the resizing is done to reposition the flights
 $( window ).resize(function() {
-
+    positionFlights();
 });
 
 function positionFlights() {
     $('.flight').each(function( index ) {
-        var offsetX = 0;
-        var offsetY = 0;
+        var minX = 0;
+        var maxX = document.body.clientWidth;
+        var minY = 0;
+        var maxY = document.body.clientHeight;
 
         // if we have the header on top
-        if ( $('aside').width() == document.body.clientWidth ) {
-            offsetY = $('aside').outerHeight();
+        if ( $('aside').outerWidth() == document.body.clientWidth ) {
+            minY = $('aside').outerHeight();
         } else {
-            offsetX = $('aside').outerWidth();
+            minX = $('aside').outerWidth();
         }
+
         $(this).css({
-            'left': getRandomInt(offsetX, $(document).width())+'px',
-            'top': getRandomInt(offsetY, $(document).height())+'px'
+            'left': getRandomInt(minX, maxX) + "px",
+            'top': getRandomInt(minY, maxY) + "px"
         })
     });
 }
@@ -144,20 +152,27 @@ function positionFlights() {
 function moveFlights() {
     $('.flight').each(function( index ) {
         var position = $(this).position();
-        posX = getRandomInt(position.left - variation, position.left + variation);
-        posY = getRandomInt(position.top - variation, position.top + variation);
-        
-        while(posX < ($('aside').outerWidth() + 8)) {
-            posX++;
+        posX = position.left + getRandomInt(-variation, variation);
+        posY = position.top + getRandomInt(-variation, variation);
+
+        // if we have the aside on top
+        if ( $('aside').outerWidth() == document.body.clientWidth ) {
+            while(posY < ($('aside').outerHeight() + 8)) {
+                posY++;
+            }
+        } else {
+            while(posX < ($('aside').outerWidth() + 8)) {
+                posX++;
+            }
         }
-        
-        while(posY > ($('main').height() - $('.flight').height())) {
+
+        while(posY > (document.body.clientHeight - $('.flight').outerHeight())) {
             posY--;
         }
         
         $(this).css({
-            "left": Math.abs(posX) + "px",
-            "top": Math.abs(posY) + "px"
+            'left': Math.abs(posX) + "px",
+            'top': Math.abs(posY) + "px"
         })
     });
 }
