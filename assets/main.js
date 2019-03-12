@@ -32,7 +32,7 @@ $(document).ready(function() {
 
     // Get the flights data, in this case arrivals
     $.ajax({
-        url: 'https://developer.fraport.de/api/flights/1.0/flight/FRA/arrival',
+        url: 'https://developer.fraport.de/api/flights/1.0/flight/FRA/arrival/blabla',
         beforeSend: function(xhr) {
             xhr.setRequestHeader("Authorization", "Bearer a01c8b71-9627-3f15-a86e-fde8aaec7bbc")
         },
@@ -54,19 +54,19 @@ $(document).ready(function() {
         error: function(jqXHR, textStatus, errorThrown)   {
             console.log(textStatus);
             // Alternatively use a local file
-            $.getJSON('flights.json', { get_param: 'value' }, function(data) {
+            $.getJSON('https://vrmrck.be/projects/legibility/assets/flights.json', function(data) {
                 $('.loading').hide();
                 $.each(data, function(index, item) {
+                    flightNumber = item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber;
+                    aircraftType = item.flight.aircraftType.icaoCode == "undefined" ? '' : item.flight.aircraftType.icaoCode;
                     $('main').append($('<div>', {
-                        html: item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber + "<br>" + item.flight.aircraftType.icaoCode,
-                        class: "flight",
-                        css: {
-                            'left': getRandomInt($('aside').width(), $(document).width())+'px',
-                            'top': getRandomInt(0, $(document).height())+'px'
-                        }
+                        html: flightNumber + "<br>" + aircraftType,
+                        class: "flight"
                     }));
                     return index < maxPlanes;
-                    });
+                });
+                // Position flights randomly on the page
+                positionFlights();
             });
         }
     });
