@@ -3,22 +3,35 @@ var variation = 8;
 // Interval speed in milliseconds. 1 second is typical for a radar.
 var speed = 1000;
 // The display density of planes on a given surface.
-var density = 50000;
+var density = 40000;
 // Which fonts to select?
-var fonts = [
+var fontsGoogle = [
 'Roboto',
 'Roboto Mono',
 'Fira Sans',
 'Fira Mono',
 'Ubuntu',
 'Ubuntu Mono',
+'IBM Plex Sans',
+'IBM Plex Mono',
 'Source Code Pro',
-'Inter',
 'Open Sans',
-'Exo',
-'Lucida Grande',
-'Verdana'
+'Exo'
 ];
+var fontsExt = [
+    'Inter',
+    'Lucida Grande',
+    'Verdana'
+];
+
+var fonts = fontsGoogle.concat(fontsExt);
+
+// Load all the fonts!
+WebFont.load({
+    google: {
+      families: fontsGoogle
+    }
+});
 
 $(document).ready(function() {
     var inputFont = $("#inputFont");
