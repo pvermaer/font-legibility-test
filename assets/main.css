@@ -138,7 +138,9 @@ h1 {
 
 .flight {
     position: absolute;
-    font-feature-settings: 'zero' 1;
+    -webkit-font-feature-settings: "zero";
+    font-feature-settings: "zero";
+    font-variant-numeric: slashed-zero;
     line-height: 100%;
     z-index: -1;
 }
