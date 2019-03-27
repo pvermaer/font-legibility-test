@@ -108,10 +108,10 @@ $(document).ready(function() {
     });
 
     inputTheme.change(function() {
-        document.documentElement.classList.add('color-theme-in-transition')
+        document.documentElement.classList.add('color-theme-in-transition');
         document.documentElement.setAttribute('data-theme', inputTheme.val());
         window.setTimeout(function() {
-            document.documentElement.classList.remove('color-theme-in-transition')
+            document.documentElement.classList.remove('color-theme-in-transition');
         }, 1000);
     });
 
@@ -123,6 +123,11 @@ $(document).ready(function() {
         }
     });
     
+    // Detect if the user has Dark mode on and set theme to Dark
+    if ( window.matchMedia("(prefers-color-scheme: dark)").matches ) {
+        inputTheme.val("dark");
+    }
+
     inputFont.trigger('change');
     inputSize.trigger('change');
     inputBlur.trigger('change');
