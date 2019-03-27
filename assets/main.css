@@ -1,5 +1,18 @@
-* {
-    box-sizing: border-box; 
+:root {
+    --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    font-family: var(--font-family-sans-serif);
+    line-height: 1.5rem;
 }
 
 html[data-theme='light'] {
@@ -43,8 +56,6 @@ body {
     min-height: 100vh;
     margin: 0;
     font-size: 16px;
-    line-height: 1.5rem;
-    font-family:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 aside {
@@ -142,5 +153,14 @@ h1 {
     font-feature-settings: "zero";
     font-variant-numeric: slashed-zero;
     line-height: 100%;
-    z-index: -1;
+    font-kerning: normal;
+    -webkit-font-kerning: normal;
+    -ms-font-kerning: normal;
+    -moz-font-kerning: normal;
+    -o-font-kerning: normal;
+    font-variant-ligatures: contextual common-ligatures;
+    -webkit-font-variant-ligatures: contextual common-ligatures;
+    -ms-font-variant-ligatures: contextual common-ligatures;
+    -moz-font-variant-ligatures: contextual common-ligatures;
+    -o-font-variant-ligatures: contextual common-ligatures;
 }
