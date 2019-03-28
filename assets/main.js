@@ -6,25 +6,26 @@ var speed = 1000;
 var density = 40000;
 // Which fonts to select?
 var fontsGoogle = [
-'Roboto',
-'Roboto Mono',
-'Fira Sans',
-'Fira Mono',
-'Ubuntu',
-'Ubuntu Mono',
-'IBM Plex Sans',
-'IBM Plex Mono',
-'Source Code Pro',
-'Open Sans',
-'Exo'
+    'Roboto',
+    'Roboto Mono',
+    'Fira Sans',
+    'Fira Mono',
+    'Ubuntu',
+    'Ubuntu Mono',
+    'IBM Plex Sans',
+    'IBM Plex Mono',
+    'Source Code Pro',
+    'Open Sans',
+    'Exo'
 ];
 var fontsExt = [
+    'Arial',
     'Inter',
     'Lucida Grande',
     'Verdana'
 ];
 
-var fonts = fontsGoogle.concat(fontsExt);
+var fonts = fontsExt.concat(fontsGoogle).sort();
 
 // Load all the fonts!
 WebFont.load({
