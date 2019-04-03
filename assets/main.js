@@ -22,7 +22,8 @@ var fontsExt = [
     'Arial',
     'Inter',
     'Lucida Grande',
-    'Verdana'
+    'Verdana',
+    'System Font'
 ];
 
 var fonts = fontsExt.concat(fontsGoogle).sort();
@@ -97,7 +98,12 @@ $(document).ready(function() {
 
     inputFont.change(function() {
         selectedFont = $('#inputFont option:selected').text();
-        $('main').css('font-family', selectedFont);
+        if(selectedFont == "System Font") {
+            // Use native font stack
+            $('main').css('font-family', '');
+        } else {
+            $('main').css('font-family', selectedFont);
+        }
     });
 
     inputSize.change(function() {
