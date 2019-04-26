@@ -38,7 +38,7 @@ WebFont.load({
 // Seed the simplex noise generator
 noise.seed(Math.random());
 // A time value used for the Simplex algorithm
-var t = 0;
+var start = Date.now();
 
 $(document).ready(function() {
     var inputFont = $("#inputFont");
@@ -57,7 +57,7 @@ $(document).ready(function() {
         url: 'https://developer.fraport.de/api/flights/1.0/flight/FRA/arrival',
         beforeSend: function(xhr) {
             xhr.setRequestHeader("Authorization", "Bearer a01c8b71-9627-3f15-a86e-fde8aaec7bbc")
-        },
+        },  
         success: function(data){
             $('.loading').hide();
             $.each(data, function(index, item) {
@@ -67,9 +67,9 @@ $(document).ready(function() {
                 $('main').append($('<div>', {
                     html: flightNumber + "<br>" + aircraftType,
                     class: "flight",
-                    'data-random-x': Math.random() * 300,
-                    'data-random-y': Math.random() * 300,
-                    'data-speed': Math.random() * 0.01 + 0.0001
+                    'data-random-x': Math.random() * $('main').innerWidth(),
+                    'data-random-y': Math.random() * $('main').innerHeight(),
+                    'data-speed': Math.random() * 0.001 + 0.0001
                 }));
                 return index < maxPlanes;
             });
@@ -183,15 +183,18 @@ function positionFlights() {
 }
 
 function moveFlights() {
-    t += 1;
     $('.flight').each(function( index ) {
-        var noiseX = (noise.simplex2(0, t * $(this).attr('data-speed')) + 1) / 2;
-        var noiseY = (noise.simplex2(1, t * $(this).attr('data-speed')) + 1) / 2;
+        let randomX = $(this).attr('data-random-x');
+        let randomY = $(this).attr('data-random-y');
+        let randomSpeed = $(this).attr('data-speed');
+        console.log(randomX, randomY)
+        var noiseX = (noise.simplex3(100, 0, (Date.now() - start) * randomSpeed) + 1) / 2;
+        var noiseY = (noise.simplex3(randomY, 0, (Date.now() - start) * randomSpeed) + 1) / 2;
 
         var x = noiseX * $('main').innerWidth();
         var y = noiseY * $('main').innerHeight();
 
-        //console.log(noiseX,noiseY);
+        console.log(noiseX,noiseY);
         $(this).css({
             'transform': `translate(${x}px, ${y}px)`
         });

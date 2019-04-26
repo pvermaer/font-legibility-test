@@ -151,6 +151,7 @@ h1 {
 }
 
 .flight {
+    background-color: var(--background);
     -webkit-font-feature-settings: "zero";
     font-feature-settings: "zero";
     font-variant-numeric: slashed-zero;

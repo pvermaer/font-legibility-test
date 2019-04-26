@@ -61,6 +61,27 @@
     <div class="flight">TUI174<br>B738</div>
     <div class="flight">LH174<br>B738</div>
     <div class="flight">TUI174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">LH174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">LH174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">LH174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">LH174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">LH174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">LH174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">LH174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
 </main>
 </body>
 </html>
@@ -71,9 +92,12 @@
 
     function moveFlights() {
         t += 1;
+        var xoffset = 0;
+        var yoffset = 0;
+
         $('.flight').each(function( index ) {
-            const noiseX = (noise.simplex2(0, t*0.0075) + 1) / 2;
-            const noiseY = (noise.simplex2(1, t*0.0075) + 1) / 2;
+            const noiseX = (noise.simplex3(xoffset, yoffset, t*0.0075) + 1) / 2;
+            const noiseY = (noise.simplex3(xoffset+1, yoffset+1, t*0.0075) + 1) / 2;
 
             const x = noiseX * $('main').innerWidth();
             const y = noiseY * $('main').innerHeight();
@@ -82,6 +106,9 @@
             $(this).css({
                 'transform': `translate(${x}px, ${y}px)`
             })
+
+            xoffset += 0.1;
+            yoffset += 0.1;
 
             /*
             var position = $(this).position();
