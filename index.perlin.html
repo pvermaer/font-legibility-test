@@ -17,7 +17,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
     <script src="assets/jquery.min.js"></script>
     <script src="assets/perlin.js"></script>
-    <script src="assets/main.js"></script>
 
     <link href="https://rsms.me/inter/inter.css" rel="stylesheet">
     <link href="assets/main.css" rel="stylesheet">
@@ -59,16 +58,58 @@
     </footer>
 </aside>
 <main>
-    <div class="loading">Loading flight data&hellip;</div>
+    <div class="flight">TUI174<br>B738</div>
+    <div class="flight">LH174<br>B738</div>
+    <div class="flight">TUI174<br>B738</div>
 </main>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-2030988-7"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-2030988-7');
-</script>
-
 </body>
 </html>
+
+<script type="text/javascript">
+    noise.seed(Math.random());
+    var t = 0;
+
+    function moveFlights() {
+        t += 1;
+        $('.flight').each(function( index ) {
+            const noiseX = (noise.simplex2(0, t*0.0075) + 1) / 2;
+            const noiseY = (noise.simplex2(1, t*0.0075) + 1) / 2;
+
+            const x = noiseX * $('main').innerWidth();
+            const y = noiseY * $('main').innerHeight();
+
+            // Apply the x & y coordinates on our element
+            $(this).css({
+                'transform': `translate(${x}px, ${y}px)`
+            })
+
+            /*
+            var position = $(this).position();
+            posX = position.left + getRandomInt(-variation, variation);
+            posY = position.top + getRandomInt(-variation, variation);
+
+            // if we have the aside on top
+            if ( $('aside').outerWidth() == document.body.clientWidth ) {
+                while(posY < ($('aside').outerHeight() + 8)) {
+                    posY++;
+                }
+            } else {
+                while(posX < ($('aside').outerWidth() + 8)) {
+                    posX++;
+                }
+            }
+
+            while(posY > (document.body.clientHeight - $('.flight').outerHeight())) {
+                posY--;
+            }
+            
+            $(this).css({
+                'transform': "translate(" + Math.abs(posX) + "px," + Math.abs(posY) + "px)"
+            })
+            */
+        });
+        //requestAnimationFrame(moveFlights);
+    }
+    var timeoutID = window.setInterval(moveFlights, 1000);
+    //requestAnimationFrame(moveFlights);
+</script>

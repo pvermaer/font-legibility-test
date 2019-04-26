@@ -68,9 +68,11 @@ aside {
 }
 
 main {
+    /*
     display: flex;
     align-items: center;
     justify-content: center;
+    */
     color: var(--text-color);
     background-color: var(--background);
 }
@@ -95,6 +97,7 @@ main {
 
     aside {
         min-width: 18rem;
+        max-height: 100vh;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: flex-start;
@@ -148,7 +151,6 @@ h1 {
 }
 
 .flight {
-    position: absolute;
     -webkit-font-feature-settings: "zero";
     font-feature-settings: "zero";
     font-variant-numeric: slashed-zero;

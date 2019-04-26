@@ -35,6 +35,11 @@ WebFont.load({
     }
 });
 
+// Seed the simplex noise generator
+noise.seed(Math.random());
+// A time value used for the Simplex algorithm
+var t = 0;
+
 $(document).ready(function() {
     var inputFont = $("#inputFont");
     var inputSize = $("#inputSize");
@@ -61,12 +66,15 @@ $(document).ready(function() {
 
                 $('main').append($('<div>', {
                     html: flightNumber + "<br>" + aircraftType,
-                    class: "flight"
+                    class: "flight",
+                    'data-random-x': Math.random() * 300,
+                    'data-random-y': Math.random() * 300,
+                    'data-speed': Math.random() * 0.01 + 0.0001
                 }));
                 return index < maxPlanes;
             });
             // Position flights randomly on the page
-            positionFlights();
+            moveFlights();
         },
         error: function(jqXHR, textStatus, errorThrown)   {
             console.log(textStatus);
@@ -83,7 +91,7 @@ $(document).ready(function() {
                     return index < maxPlanes;
                 });
                 // Position flights randomly on the page
-                positionFlights();
+                moveFlights();
             });
         }
     });
@@ -150,7 +158,7 @@ function getRandomInt(min, max) {
 
 // Wait until the resizing is done to reposition the flights
 $( window ).resize(function() {
-    positionFlights();
+    moveFlights();
 });
 
 function positionFlights() {
@@ -175,29 +183,17 @@ function positionFlights() {
 }
 
 function moveFlights() {
+    t += 1;
     $('.flight').each(function( index ) {
-        var position = $(this).position();
-        posX = position.left + getRandomInt(-variation, variation);
-        posY = position.top + getRandomInt(-variation, variation);
+        var noiseX = (noise.simplex2(0, t * $(this).attr('data-speed')) + 1) / 2;
+        var noiseY = (noise.simplex2(1, t * $(this).attr('data-speed')) + 1) / 2;
 
-        // if we have the aside on top
-        if ( $('aside').outerWidth() == document.body.clientWidth ) {
-            while(posY < ($('aside').outerHeight() + 8)) {
-                posY++;
-            }
-        } else {
-            while(posX < ($('aside').outerWidth() + 8)) {
-                posX++;
-            }
-        }
+        var x = noiseX * $('main').innerWidth();
+        var y = noiseY * $('main').innerHeight();
 
-        while(posY > (document.body.clientHeight - $('.flight').outerHeight())) {
-            posY--;
-        }
-        
+        //console.log(noiseX,noiseY);
         $(this).css({
-            'left': Math.abs(posX) + "px",
-            'top': Math.abs(posY) + "px"
-        })
+            'transform': `translate(${x}px, ${y}px)`
+        });
     });
 }
