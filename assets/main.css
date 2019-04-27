@@ -53,12 +53,14 @@ body {
     flex-wrap: wrap;
     align-content: flex-start;
     overflow: hidden;
-    min-height: 100vh;
+    height: 100vh;
     margin: 0;
     font-size: 16px;
 }
 
 aside {
+    position: relative;
+    z-index: 1337;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column-reverse;
@@ -68,11 +70,11 @@ aside {
 }
 
 main {
-    /*
     display: flex;
     align-items: center;
     justify-content: center;
-    */
+    height: 100vh;
+    padding: 1.5rem;
     color: var(--text-color);
     background-color: var(--background);
 }
@@ -151,6 +153,8 @@ h1 {
 }
 
 .flight {
+    position: absolute;
+    z-index: 1;
     -webkit-font-feature-settings: "zero";
     font-feature-settings: "zero";
     font-variant-numeric: slashed-zero;
