@@ -2,8 +2,8 @@
 var variation = 8;
 // Interval speed in milliseconds. 1 second is typical for a radar.
 var speed = 1000;
-// The display density of planes on a given surface.
-var density = 40000;
+// The display density of planes on a given surface (higer value is less planes..)
+var density = 75000;
 // Which fonts to select?
 var fontsGoogle = [
     'Roboto',
@@ -40,6 +40,9 @@ noise.seed(Math.random());
 // A time value used for the Simplex algorithm
 var start = Date.now();
 
+// How many planes to show? Results in 20 - 50 planes on a typical display
+var maxPlanes = ($(window).width() * $(window).height() / density).toFixed();
+
 $(document).ready(function() {
     var inputFont = $("#inputFont");
     var inputSize = $("#inputSize");
@@ -47,10 +50,6 @@ $(document).ready(function() {
     var inputTheme = $("#inputTheme");
     var inputMovement = $("#inputMovement");
     var movementInterval = false;
-    var resizeInterval;
- 
-    // How many planes to show? Results in 20 - 50 planes on a typical display
-    var maxPlanes = (document.body.clientWidth * document.body.clientHeight / density).toFixed();
 
     // Get the flights data, in this case arrivals
     $.ajax({
@@ -61,35 +60,25 @@ $(document).ready(function() {
         success: function(data){
             $('.loading').hide();
             $.each(data, function(index, item) {
-                flightNumber = item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber;
-                aircraftType = item.flight.aircraftType.icaoCode == "undefined" ? '' : item.flight.aircraftType.icaoCode;
+                positionFlight(index, item);
 
-                $('main').append($('<div>', {
-                    html: flightNumber + "<br>" + aircraftType,
-                    class: "flight",
-                    'data-random-x': Math.random() * $('main').innerWidth(),
-                    'data-random-y': Math.random() * $('main').innerHeight(),
-                    'data-speed': Math.random() * 0.001 + 0.0001
-                }));
                 return index < maxPlanes;
             });
+            
             // Position flights randomly on the page
             moveFlights();
         },
-        error: function(jqXHR, textStatus, errorThrown)   {
-            console.log(textStatus);
+        error: function(jqXHR, textStatus, errorThrown)   {            
             // Alternatively use a local file
             $.getJSON('flights.json', function(data) {
                 $('.loading').hide();
                 $.each(data, function(index, item) {
-                    flightNumber = item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber;
-                    aircraftType = item.flight.aircraftType.icaoCode == "undefined" ? '' : item.flight.aircraftType.icaoCode;
-                    $('main').append($('<div>', {
-                        html: flightNumber + "<br>" + aircraftType,
-                        class: "flight"
-                    }));
+                    positionFlight(index, item);
+
+                    // Stop when maximum planes point is met
                     return index < maxPlanes;
                 });
+                
                 // Position flights randomly on the page
                 moveFlights();
             });
@@ -150,53 +139,39 @@ $(document).ready(function() {
     inputMovement.trigger('change');
 });
 
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
 // Wait until the resizing is done to reposition the flights
 $( window ).resize(function() {
     moveFlights();
 });
 
-function positionFlights() {
-    $('.flight').each(function( index ) {
-        var minX = 0;
-        var maxX = document.body.clientWidth;
-        var minY = 0;
-        var maxY = document.body.clientHeight;
+function positionFlight(index, item) {
+    flightNumber = item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber;
+    aircraftType = item.flight.aircraftType.icaoCode == "undefined" || item.flight.aircraftType.icaoCode === undefined ? "" : item.flight.aircraftType.icaoCode;
 
-        // if we have the header on top
-        if ( $('aside').outerWidth() == document.body.clientWidth ) {
-            minY = $('aside').outerHeight();
-        } else {
-            minX = $('aside').outerWidth();
-        }
-
-        $(this).css({
-            'left': getRandomInt(minX, maxX) + "px",
-            'top': getRandomInt(minY, maxY) + "px"
-        })
-    });
+    $('main').append($('<div>', {
+        html: flightNumber + "<br>" + aircraftType,
+        class: "flight",
+        'data-random-x': Math.random() * maxPlanes,
+        'data-random-y': Math.random() * maxPlanes,
+        'data-speed': Math.random() * 0.00001 + 0.000001
+    }));
 }
 
 function moveFlights() {
     $('.flight').each(function( index ) {
-        let randomX = $(this).attr('data-random-x');
-        let randomY = $(this).attr('data-random-y');
-        let randomSpeed = $(this).attr('data-speed');
-        console.log(randomX, randomY)
-        var noiseX = (noise.simplex3(100, 0, (Date.now() - start) * randomSpeed) + 1) / 2;
-        var noiseY = (noise.simplex3(randomY, 0, (Date.now() - start) * randomSpeed) + 1) / 2;
+        let randomX = parseFloat($(this).attr('data-random-x'));
+        let randomY = parseFloat($(this).attr('data-random-y'));
+        let randomSpeed = parseFloat($(this).attr('data-speed'));
 
-        var x = noiseX * $('main').innerWidth();
-        var y = noiseY * $('main').innerHeight();
-
-        console.log(noiseX,noiseY);
+        // Calculate new position with 3-dimensional Simplex noise
+        // Shout out to Louis https://css-tricks.com/simulating-mouse-movement/
+        var x = ((noise.simplex3(randomX, 0, (Date.now() - start) * randomSpeed) + 1) / 2) * $(window).width();
+        var y = ((noise.simplex3(randomY, 0, (Date.now() - start) * randomSpeed) + 1) / 2) * $(window).height();
+        
+        // Reposition the plane
         $(this).css({
-            'transform': `translate(${x}px, ${y}px)`
-        });
+            'left': x + "px",
+            'top': y + "px"
+        })
     });
 }
