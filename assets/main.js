@@ -1,9 +1,8 @@
-// How many pixels can each flight shift per interval?
-var variation = 8;
-// Interval speed in milliseconds. 1 second is typical for a radar.
+// Length of the interval in milliseconds. 1 second is typical for a radar.
 var speed = 1000;
-// The display density of planes on a given surface (higer value is less planes..)
+// The display density of planes on a given surface (higer value is... less planes.. uhm ok)
 var density = 75000;
+
 // Which fonts to select?
 var fontsGoogle = [
     'Roboto',
@@ -25,8 +24,6 @@ var fontsExt = [
     'Verdana',
     'System Font'
 ];
-
-var fonts = fontsExt.concat(fontsGoogle).sort();
 
 // Load all the fonts!
 WebFont.load({
@@ -61,7 +58,8 @@ $(document).ready(function() {
             $('.loading').hide();
             $.each(data, function(index, item) {
                 positionFlight(index, item);
-
+                
+                // Stop when maximum planes point is met
                 return index < maxPlanes;
             });
             
@@ -74,11 +72,10 @@ $(document).ready(function() {
                 $('.loading').hide();
                 $.each(data, function(index, item) {
                     positionFlight(index, item);
-
                     // Stop when maximum planes point is met
                     return index < maxPlanes;
                 });
-                
+
                 // Position flights randomly on the page
                 moveFlights();
             });
@@ -87,14 +84,15 @@ $(document).ready(function() {
 
     // Remove loading fonts message
     $('#inputFont option').remove();
+    
+    // Combine fonts from different sources and sort them alphabetically and populate the dropdown
+    var fonts = fontsExt.concat(fontsGoogle).sort();
     $.each(fonts, function(i, val) {
         inputFont.append($("<option />").val(val).text(val));
     });
 
-    var selectedFont = $('#inputFont option:selected').text();
-
     inputFont.change(function() {
-        selectedFont = $('#inputFont option:selected').text();
+        let selectedFont = $('#inputFont option:selected').text();
         if(selectedFont == "System Font") {
             // Use native font stack
             $('main').css('font-family', '');
@@ -132,11 +130,12 @@ $(document).ready(function() {
         inputTheme.val("dark");
     }
 
-    inputFont.trigger('change');
-    inputSize.trigger('change');
-    inputBlur.trigger('change');
-    inputTheme.trigger('change');
-    inputMovement.trigger('change');
+    // Trigger the change event so we can set the default values
+    inputFont.trigger("change");
+    inputSize.trigger("change");
+    inputBlur.trigger("change");
+    inputTheme.trigger("change");
+    inputMovement.trigger("change");
 });
 
 // Wait until the resizing is done to reposition the flights
@@ -145,9 +144,12 @@ $( window ).resize(function() {
 });
 
 function positionFlight(index, item) {
+    // Callsigns are a combination of the airline code and the flight number
     flightNumber = item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber;
+    // Don't show anything if the value is undefined
     aircraftType = item.flight.aircraftType.icaoCode == "undefined" || item.flight.aircraftType.icaoCode === undefined ? "" : item.flight.aircraftType.icaoCode;
 
+    // Add all the flights to the main element and give each one 3 random values that will be used for generating the Simplex noise
     $('main').append($('<div>', {
         html: flightNumber + "<br>" + aircraftType,
         class: "flight",
@@ -159,14 +161,12 @@ function positionFlight(index, item) {
 
 function moveFlights() {
     $('.flight').each(function( index ) {
-        let randomX = parseFloat($(this).attr('data-random-x'));
-        let randomY = parseFloat($(this).attr('data-random-y'));
         let randomSpeed = parseFloat($(this).attr('data-speed'));
 
         // Calculate new position with 3-dimensional Simplex noise
-        // Shout out to Louis https://css-tricks.com/simulating-mouse-movement/
-        var x = ((noise.simplex3(randomX, 0, (Date.now() - start) * randomSpeed) + 1) / 2) * $(window).width();
-        var y = ((noise.simplex3(randomY, 0, (Date.now() - start) * randomSpeed) + 1) / 2) * $(window).height();
+        // Shout-out to Louis https://css-tricks.com/simulating-mouse-movement/
+        var x = ((noise.simplex3(parseFloat($(this).attr('data-random-x')), 0, (Date.now() - start) * randomSpeed) + 1) / 2) * $( window ).width();
+        var y = ((noise.simplex3(parseFloat($(this).attr('data-random-y')), 0, (Date.now() - start) * randomSpeed) + 1) / 2) * $( window ).height();
         
         // Reposition the plane
         $(this).css({
