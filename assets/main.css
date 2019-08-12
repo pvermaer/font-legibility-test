@@ -170,3 +170,23 @@ h1 {
     -moz-font-variant-ligatures: contextual common-ligatures;
     -o-font-variant-ligatures: contextual common-ligatures;
 }
+
+.airplane {
+    text-align: left;
+    width: 12rem;
+    animation: airplane-fly 1.2s linear infinite;
+    will-change: transform, opacity;
+}
+
+@keyframes airplane-fly {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        opacity:0.5;
+    }
+    100% { 
+        transform: rotate(360deg);
+        opacity: 1;
+    }
+}

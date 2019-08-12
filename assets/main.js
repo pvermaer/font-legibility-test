@@ -55,7 +55,7 @@ $(document).ready(function() {
             xhr.setRequestHeader("Authorization", "Bearer a01c8b71-9627-3f15-a86e-fde8aaec7bbc")
         },  
         success: function(data){
-            $('.loading').hide();
+            $('.loading').fadeOut();
             $.each(data, function(index, item) {
                 positionFlight(index, item);
                 
