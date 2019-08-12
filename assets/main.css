@@ -77,6 +77,7 @@ main {
     padding: 1.5rem;
     color: var(--text-color);
     background-color: var(--background);
+    background-image: url("topography.svg");
 }
 
 @media (min-width: 48rem) {
@@ -139,9 +140,8 @@ h1 {
 }
 
 .loading {
-    font-size: 1.5rem;
     text-align: center;
-    color:#aaaaaa;
+    font-weight:bold;
 }
 
 .form-group {
