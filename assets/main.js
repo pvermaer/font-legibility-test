@@ -46,6 +46,7 @@ $(document).ready(function() {
     var inputBlur = $("#inputBlur");
     var inputTheme = $("#inputTheme");
     var inputMovement = $("#inputMovement");
+    var inputBackground = $("#inputBackground");
     var movementInterval = false;
 
     // Get the flights data, in this case arrivals
@@ -125,6 +126,10 @@ $(document).ready(function() {
         }
     });
     
+    inputBackground.change(function() {
+        $('main').toggleClass('background');
+    });
+    
     // Detect if the user has Dark mode on and set theme to Dark
     if ( window.matchMedia("(prefers-color-scheme: dark)").matches ) {
         inputTheme.val("dark");
@@ -136,6 +141,7 @@ $(document).ready(function() {
     inputBlur.trigger("change");
     inputTheme.trigger("change");
     inputMovement.trigger("change");
+    inputBackground.trigger("change");
 });
 
 // Wait until the resizing is done to reposition the flights

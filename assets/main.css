@@ -77,6 +77,13 @@ main {
     padding: 1.5rem;
     color: var(--text-color);
     background-color: var(--background);
+}
+
+.background {
+    background-image: url("topography-dark.svg");
+}
+
+html[data-theme='light'] .background { 
     background-image: url("topography.svg");
 }
 
@@ -130,6 +137,30 @@ select {
     border: 0;
 }
 
+.tgl-flat .tgl-btn {
+		padding: 2px;
+		transition: all .2s ease;
+		background: #fff;
+		border: 4px solid #f2f2f2;
+		border-radius: 2em;
+    }
+
+    .tgl-flat .tgl-btn :after {
+        transition: all .2s ease;
+        background: #f2f2f2;
+        content: "";
+        border-radius: 1em;
+    }
+  
+.tgl-flat:checked .tgl-btn {
+    border: 4px solid #7FC6A6;
+}
+
+.tgl-flat:after {
+    left: 50%;
+    background: #7FC6A6;
+  }
+
 a {
     color: var(--link-color);
 }
@@ -173,20 +204,21 @@ h1 {
 
 .airplane {
     text-align: left;
-    width: 12rem;
-    animation: airplane-fly 1.2s linear infinite;
+    width: 20rem;
+    animation: airplane-fly 2s linear infinite;
     will-change: transform, opacity;
 }
 
 @keyframes airplane-fly {
     0% {
         transform: rotate(0deg);
+        opacity:0;
     }
     50% {
         opacity:0.5;
     }
     100% { 
         transform: rotate(360deg);
-        opacity: 1;
+        opacity: 0;
     }
 }
