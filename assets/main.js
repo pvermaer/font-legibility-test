@@ -42,6 +42,7 @@ var maxPlanes = ($(window).width() * $(window).height() / density).toFixed();
 
 $(document).ready(function() {
     var inputFont = $("#inputFont");
+    var inputFontSlider = $("#inputFontSlider");
     var inputSize = $("#inputSize");
     var inputBlur = $("#inputBlur");
     var inputTheme = $("#inputTheme");
@@ -90,6 +91,14 @@ $(document).ready(function() {
     var fonts = fontsExt.concat(fontsGoogle).sort();
     $.each(fonts, function(i, val) {
         inputFont.append($("<option />").val(val).text(val));
+        $("#fontSliderTicks").append($("<option />").val(i));
+    });
+
+    // One slider step per font in the dropdown
+    inputFontSlider.attr("max", fonts.length - 1);
+
+    inputFontSlider.on("input", function() {
+        inputFont.prop("selectedIndex", inputFontSlider.val()).trigger("change");
     });
 
     inputFont.change(function() {
@@ -100,6 +109,7 @@ $(document).ready(function() {
         } else {
             $('main').css('font-family', selectedFont);
         }
+        inputFontSlider.val(inputFont.prop("selectedIndex"));
     });
 
     inputSize.change(function() {

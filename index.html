@@ -17,10 +17,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
     <script src="assets/jquery.min.js"></script>
     <script src="assets/perlin.js"></script>
-    <script src="assets/main.js?v=12"></script>
+    <script src="assets/main.js?v=13"></script>
 
     <link href="https://rsms.me/inter/inter.css" rel="stylesheet">
-    <link href="assets/main.css?v=12" rel="stylesheet">
+    <link href="assets/main.css?v=13" rel="stylesheet">
     <link rel="icon" href="favicon.ico">
 
 </head>
@@ -48,6 +48,8 @@
                 <select id="inputFont">
                     <option disabled>Loading fonts&hellip;</option>
                 </select>
+                <input id="inputFontSlider" type="range" min="0" max="0" value="0" list="fontSliderTicks">
+                <datalist id="fontSliderTicks"></datalist>
         </div>
         <div class="form-group">
             <input type="checkbox" id="inputMovement" checked>
