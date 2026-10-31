@@ -183,6 +183,14 @@ h1 {
     margin-right: 0.5rem;
 }
 
+input[type="range"] {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0;
+    background-color: transparent;
+}
+
 .flight {
     position: absolute;
     z-index: 1;
