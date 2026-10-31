@@ -44,7 +44,9 @@ $(document).ready(function() {
     var inputFont = $("#inputFont");
     var inputFontSlider = $("#inputFontSlider");
     var inputSize = $("#inputSize");
+    var inputSizeSlider = $("#inputSizeSlider");
     var inputBlur = $("#inputBlur");
+    var inputBlurSlider = $("#inputBlurSlider");
     var inputTheme = $("#inputTheme");
     var inputMovement = $("#inputMovement");
     var inputBackground = $("#inputBackground");
@@ -114,10 +116,20 @@ $(document).ready(function() {
 
     inputSize.change(function() {
         $('main').css('font-size', inputSize.val() + "px");
+        inputSizeSlider.val(inputSize.val());
+    });
+
+    inputSizeSlider.on("input", function() {
+        inputSize.val(inputSizeSlider.val()).trigger("change");
     });
 
     inputBlur.change(function() {
         $('main').css('filter', "blur(" + inputBlur.val() + "px)");
+        inputBlurSlider.val(inputBlur.val());
+    });
+
+    inputBlurSlider.on("input", function() {
+        inputBlur.val(inputBlurSlider.val()).trigger("change");
     });
 
     inputTheme.change(function() {

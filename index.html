@@ -28,28 +28,30 @@
 <aside>
     <form>
         <div class="form-group">
-        <label for="inputSize">Font size:</label>
-        <input id="inputSize" type="number" min="1" max="36" value="12">
+            <label for="inputSize">Font size:</label>
+            <input id="inputSize" type="number" min="1" max="36" value="12">
+            <input id="inputSizeSlider" type="range" min="1" max="36" value="12">
         </div>
         <div class="form-group">
             <label for="inputBlur">Blur:</label>
             <input id="inputBlur" type="number" min="0" max="5" value="0">
+            <input id="inputBlurSlider" type="range" min="0" max="5" step="0.25" value="0">
         </div>
         <div class="form-group">
-                <label for="inputTheme">Theme:</label>
-                <select id="inputTheme">
-                    <option value="light" selected>Light</option>
-                    <option value="dark">Dark</option>
-                    <option value="high-contrast">High contrast</option>
-                </select>
+            <label for="inputFont">Font:</label>
+            <select id="inputFont">
+                <option disabled>Loading fonts&hellip;</option>
+            </select>
+            <input id="inputFontSlider" type="range" min="0" max="0" value="0" list="fontSliderTicks">
+            <datalist id="fontSliderTicks"></datalist>
         </div>
         <div class="form-group">
-                <label for="inputFont">Font:</label>
-                <select id="inputFont">
-                    <option disabled>Loading fonts&hellip;</option>
-                </select>
-                <input id="inputFontSlider" type="range" min="0" max="0" value="0" list="fontSliderTicks">
-                <datalist id="fontSliderTicks"></datalist>
+            <label for="inputTheme">Theme:</label>
+            <select id="inputTheme">
+                <option value="light" selected>Light</option>
+                <option value="dark">Dark</option>
+                <option value="high-contrast">High contrast</option>
+            </select>
         </div>
         <div class="form-group">
             <input type="checkbox" id="inputMovement" checked>
