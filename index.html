@@ -14,14 +14,13 @@
     <meta property="og:description" content="A tool to test the legibility of different fonts for typical aviation data like flight numbers, aircraft types and gate numbers" />
     <meta property="og:image" content="https://vrmrck.be/projects/legibility/assets/font-legibility-tester.png" />
 
-    <script src="assets/jquery.min.js"></script>
-    <script src="assets/perlin.js"></script>
-    <script src="assets/main.js?v=15"></script>
+    <script src="assets/perlin.js" defer></script>
+    <script type="module" src="assets/main.js?v=16"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo&family=Fira+Mono&family=Fira+Sans&family=IBM+Plex+Mono&family=IBM+Plex+Sans&family=Inter&family=Open+Sans&family=Roboto&family=Roboto+Mono&family=Source+Code+Pro&family=Ubuntu&family=Ubuntu+Mono&display=swap" rel="stylesheet">
-    <link href="assets/main.css?v=15" rel="stylesheet">
+    <link href="assets/main.css?v=16" rel="stylesheet">
     <link rel="icon" href="favicon.ico">
 
 </head>
@@ -72,19 +71,6 @@
 <main>
     <div class="loading"><div class="airplane"><img src="assets/ic_airplanemode_active_24px.svg" alt="Loading"></div><p>Loading flight data&hellip;</p></div>
 </main>
-
-<script type="text/javascript">
-    var _paq = window._paq || [];
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-      var u="//vrmrck.be/analytics/";
-      _paq.push(['setTrackerUrl', u+'matomo.php']);
-      _paq.push(['setSiteId', '1']);
-      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-    })();
-</script>
 
 </body>
 </html>

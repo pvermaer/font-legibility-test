@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "static",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/PVERMA~1/AppData/Local/Temp/claude/023ae617b7618d05/f661c158-811d-416d-933b-28f2da0268b7/scratchpad/serve.js", "C:/Users/pvermaercke/dev/font-legibility-test", "8130"],
+      "port": 8130
+    }
+  ]
+}
