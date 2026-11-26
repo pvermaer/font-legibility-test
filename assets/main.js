@@ -15,22 +15,16 @@ var fontsGoogle = [
     'IBM Plex Mono',
     'Source Code Pro',
     'Open Sans',
-    'Exo'
+    'Exo',
+    'Inter'
 ];
+// Google fonts are loaded through the stylesheet link in index.html
 var fontsExt = [
     'Arial',
-    'Inter',
     'Lucida Grande',
     'Verdana',
     'System Font'
 ];
-
-// Load all the fonts!
-WebFont.load({
-    google: {
-      families: fontsGoogle
-    }
-});
 
 // Seed the simplex noise generator
 noise.seed(Math.random());
@@ -38,7 +32,8 @@ noise.seed(Math.random());
 var start = Date.now();
 
 // How many planes to show? Results in 20 - 50 planes on a typical display
-var maxPlanes = ($(window).width() * $(window).height() / density).toFixed();
+// (at least 20, in case the page loads in a background tab with no size yet)
+var maxPlanes = Math.max(20, Math.round($(window).width() * $(window).height() / density));
 
 $(document).ready(function() {
     var inputFont = $("#inputFont");
@@ -52,39 +47,20 @@ $(document).ready(function() {
     var inputBackground = $("#inputBackground");
     var movementInterval = false;
 
-    // Get the flights data, in this case arrivals
-    $.ajax({
-        url: 'https://developer.fraport.de/api/flights/1.0/flight/FRA/arrival',
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader("Authorization", "Bearer a01c8b71-9627-3f15-a86e-fde8aaec7bbc")
-        },  
-        success: function(data){
+    // Get the flights data: a snapshot of real Frankfurt (FRA) arrivals
+    $.getJSON('flights.json?v=14')
+        .done(function(data) {
             $('.loading').fadeOut();
-            $.each(data, function(index, item) {
-                positionFlight(index, item);
-                
-                // Stop when maximum planes point is met
-                return index < maxPlanes;
-            });
-            
+            // Show a different random selection of flights on every visit
+            $.each(shuffle(data).slice(0, maxPlanes), positionFlight);
+
             // Position flights randomly on the page
             moveFlights();
-        },
-        error: function(jqXHR, textStatus, errorThrown)   {            
-            // Alternatively use a local file
-            $.getJSON('flights.json', function(data) {
-                $('.loading').hide();
-                $.each(data, function(index, item) {
-                    positionFlight(index, item);
-                    // Stop when maximum planes point is met
-                    return index < maxPlanes;
-                });
-
-                // Position flights randomly on the page
-                moveFlights();
-            });
-        }
-    });
+        })
+        .fail(function() {
+            $('.loading .airplane').hide();
+            $('.loading p').text("Couldn't load flight data.");
+        });
 
     // Remove loading fonts message
     $('#inputFont option').remove();
@@ -157,6 +133,11 @@ $(document).ready(function() {
         inputTheme.val("dark");
     }
 
+    // Start without random movement if the user prefers reduced motion
+    if ( window.matchMedia("(prefers-reduced-motion: reduce)").matches ) {
+        inputMovement.prop("checked", false);
+    }
+
     // Trigger the change event so we can set the default values
     inputFont.trigger("change");
     inputSize.trigger("change");
@@ -171,11 +152,23 @@ $( window ).resize(function() {
     moveFlights();
 });
 
+// Fisher-Yates shuffle on a copy of the array
+function shuffle(array) {
+    var result = array.slice();
+    for (var i = result.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = result[i];
+        result[i] = result[j];
+        result[j] = tmp;
+    }
+    return result;
+}
+
 function positionFlight(index, item) {
-    // Callsigns are a combination of the airline code and the flight number
-    flightNumber = item.flight.flightNumber.airlineCode + item.flight.flightNumber.trackNumber;
-    // Don't show anything if the value is undefined
-    aircraftType = item.flight.aircraftType.icaoCode == "undefined" || item.flight.aircraftType.icaoCode === undefined ? "" : item.flight.aircraftType.icaoCode;
+    // Callsign: airline code + flight number, e.g. "DE4891"
+    var flightNumber = item.callsign;
+    // Empty string when the aircraft type is unknown
+    var aircraftType = item.type || "";
 
     // Add all the flights to the main element and give each one 3 random values that will be used for generating the Simplex noise
     $('main').append($('<div>', {

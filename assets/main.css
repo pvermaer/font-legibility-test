@@ -16,6 +16,7 @@ html {
 }
 
 html[data-theme='light'] {
+    color-scheme: light;
     --text-color: #101010;
     --textAlt-color: #04111b;
     --link-color: #293895;
@@ -25,6 +26,7 @@ html[data-theme='light'] {
   }
 
 html[data-theme='dark'] {
+    color-scheme: dark;
     --text-color: white;
     --textAlt-color: #eeeeee;
     --link-color: white;
@@ -34,6 +36,7 @@ html[data-theme='dark'] {
   }
 
 html[data-theme='high-contrast'] {
+    color-scheme: dark;
     --text-color: white;
     --textAlt-color: #eeeeee;
     --link-color: white;
@@ -42,10 +45,12 @@ html[data-theme='high-contrast'] {
     --background: black;
 }
 
-html.color-theme-in-transition,
-html.color-theme-in-transition * {
-    transition: all 750ms !important;
-    transition-delay: 0 !important;
+@media (prefers-reduced-motion: no-preference) {
+    html.color-theme-in-transition,
+    html.color-theme-in-transition * {
+        transition: all 750ms !important;
+        transition-delay: 0s !important;
+    }
 }
 
 body {
@@ -89,7 +94,7 @@ html[data-theme='light'] .background {
 
 @media (min-width: 48rem) {
     aside {
-        flex: nowrap;
+        flex-wrap: nowrap;
         justify-content: space-between;
         flex-direction: row-reverse;
     }
@@ -133,7 +138,7 @@ select {
     line-height: 1.15;
     margin: 0;
     background-color: var(--input-background);
-    color: var(--input-text);
+    color: var(--textAlt-color);
     border: 0;
 }
 
@@ -194,27 +199,23 @@ input[type="range"] {
 .flight {
     position: absolute;
     z-index: 1;
-    -webkit-font-feature-settings: "zero";
     font-feature-settings: "zero";
     font-variant-numeric: slashed-zero;
     line-height: 100%;
     font-kerning: normal;
-    -webkit-font-kerning: normal;
-    -ms-font-kerning: normal;
-    -moz-font-kerning: normal;
-    -o-font-kerning: normal;
     font-variant-ligatures: contextual common-ligatures;
-    -webkit-font-variant-ligatures: contextual common-ligatures;
-    -ms-font-variant-ligatures: contextual common-ligatures;
-    -moz-font-variant-ligatures: contextual common-ligatures;
-    -o-font-variant-ligatures: contextual common-ligatures;
 }
 
 .airplane {
     text-align: left;
     width: 20rem;
-    animation: airplane-fly 2s linear infinite;
-    will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .airplane {
+        animation: airplane-fly 2s linear infinite;
+        will-change: transform, opacity;
+    }
 }
 
 @keyframes airplane-fly {
