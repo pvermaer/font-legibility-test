@@ -170,6 +170,24 @@ inputBackground.addEventListener('change', () => {
     main.classList.toggle('background', inputBackground.checked);
 });
 
+// Keyboard shortcuts: left/right loops through the fonts, up/down changes the font size
+addEventListener('keydown', event => {
+    // Leave the arrow keys alone while a text field, dropdown or slider has focus
+    if (event.target.matches('input:not([type="checkbox"]), select, textarea')) return;
+
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        const step = event.key === 'ArrowRight' ? 1 : -1;
+        inputFont.selectedIndex = (inputFont.selectedIndex + step + fonts.length) % fonts.length;
+        inputFont.dispatchEvent(new Event('change'));
+    } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+        if (event.key === 'ArrowUp') inputSize.stepUp(); else inputSize.stepDown();
+        inputSize.dispatchEvent(new Event('change'));
+    } else {
+        return;
+    }
+    event.preventDefault();
+});
+
 // Reposition the flights when the window size changes
 addEventListener('resize', moveFlights);
 
